@@ -1,9 +1,6 @@
 <template lang="html">
   <div id="app">
     <h1>{{posts[0].data.subreddit_name_prefixed}}</h1>
-    <!-- <h2>{{posts[10].data.title}}</h2>
-    <p>{{posts[10].data.selftext}}</p>
-    <img :src="posts[10].data.url" alt="Cant Load Image"> -->
     <form v-on:submit.prevent="getPosts">
     <input type="text" v-model="subreddit">
     <button type="submit">Button</button>
@@ -25,20 +22,20 @@ export default {
   data(){
     return {
       subreddit: 'ProgrammerHumor',
-      posts: null
+      posts: []
     }
   },
+    mounted(){
+      this.getPosts()      
+    },
   methods:{
       getPosts: function(){
-        fetch(`https://www.reddit.com/r/${this.subreddit}.json`)
+        fetch(`https://www.reddit.com/r/${this.subreddit}/top.json`)
         .then(res => res.json())
-        .then(data => this.posts = data.data.children)
+        .then(allData => this.posts = allData.data.children)
       },
         
     },
-  mounted(){
-    this.getPosts()      
-  },
 }
 </script>
 
@@ -47,13 +44,11 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  text-align: left;
   color: white;
   margin-top: 60px;
   background-color: black;
   
 }
-img{
-  width: 700px
-}
+
 </style>

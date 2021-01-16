@@ -4,22 +4,24 @@
     <button v-on:click="changePage('posts')"> All Posts</button>
     <button v-on:click="changePage('saved')">Saved</button>
     <div v-if="page == 'posts'">
-      <h1 v-if="posts">{{posts[0].data.subreddit_name_prefixed}}</h1>
-      <form v-on:submit.prevent="getPosts">
-      <input type="text" v-model="subreddit">
-      <button type="submit">Go</button><br>
-      <button v-on:click="addToFavourites">Add Subreddit to Favourites</button>
-      <favourite-subreddits v-if="favouriteSubreddits.length > 0" :favouritesList="favouriteSubreddits"></favourite-subreddits>
-      <button v-if="favouriteSubreddits.length > 0"  type="submit">Go</button>
-      </form>
-      <post-list :postList="posts"></post-list>
+        <h1 v-if="posts">{{posts[0].data.subreddit_name_prefixed}}</h1>
+        <form v-on:submit.prevent="getPosts">
+        <input type="text" v-model="subreddit">
+        <button type="submit">Go</button><br>
+        <button v-on:click="addToFavourites">Add Subreddit to Favourites</button>
+        <favourite-subreddits v-if="favouriteSubreddits.length > 0" :favouritesList="favouriteSubreddits"></favourite-subreddits>
+        <button v-if="favouriteSubreddits.length > 0"  type="submit">Go</button>
+        </form>
+        <post-list :postList="posts"></post-list>
     </div>
+    <saved-posts v-if="page === 'saved'" :savedPosts="savedPosts"></saved-posts>
         
   </div>
 </template>
 
 <script>
 import PostList from './components/PostList.vue'
+import SavedPosts from './components/SavedPosts.vue'
 import FavouriteSubredditList from './components/FavouriteSubredditList.vue'
 import {eventBus} from "@/main"
 
@@ -28,7 +30,8 @@ export default {
   name: 'App',
   components: {
     "post-list": PostList,
-    "favourite-subreddits": FavouriteSubredditList
+    "favourite-subreddits": FavouriteSubredditList,
+    'saved-posts': SavedPosts
     
   },
   data(){
@@ -36,14 +39,15 @@ export default {
       subreddit: 'ProgrammerHumor',
       posts: [],
       favouriteSubreddits: [],
-      page: ''
+      page: '',
+      savedPosts: []
 
     }
   },
     mounted(){
       this.getPosts() 
       eventBus.$on("subreddit", subreddit => this.subreddit = subreddit)
-      this.getPosts() 
+      eventBus.$on("savedPost", post => this.savedPosts.push(post))
       
 
     },

@@ -1,13 +1,8 @@
 <template lang="html">
   <div>
-      <div id="post"  v-for="post in postList" v-if="!post.data.is_video">
-        <h2 v-on:click="selectPost(post)">{{post.data.title}}</h2>
-        <img v-on:click="unSelectPost(post)" id="image" v-if="selectedPost === post && !post.data.is_self" :src="post.data.url">
-        <!-- <img v-on:click="selectPost(post)"id="thumbnail"  :src="post.data.thumbnail"> -->
-        <img v-on:click="selectPost(post)"id="thumbnail" v-if="!post.data.is_self && post !== selectedPost" :src="post.data.thumbnail">
-        <h3 v-if="post.data.is_self">Text Post</h3>
-        <p v-on:click="unSelectPost(post)" v-if="post.data.is_self && post === selectedPost" >{{post.data.selftext}}</p>
-        </div>
+    <div id="post"  v-for="post in postList" v-if="!post.data.is_video">
+        <post-details :postDetails="post"></post-details>
+    </div>
   </div>
 </template>
 
@@ -34,10 +29,12 @@ export default {
         },
         unSelectPost: function(post){
             this.selectedPost = null
-        },  
+        }, 
+    }
+     
         // fetch post.data.permalink to display comments
     }
-}
+
 
 </script>
 

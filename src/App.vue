@@ -3,8 +3,10 @@
     <h1>{{posts[0].data.subreddit_name_prefixed}}</h1>
     <form v-on:submit.prevent="getPosts">
     <input type="text" v-model="subreddit">
-    <button type="submit">Button</button>
-    </form>   
+    <button type="submit">Search</button>
+    </form>
+    <button v-on:click="addToFavourites">Add Subreddit To Favourites</button>
+    <favourite-subreddits :favouritesList="favouriteSubreddits"></favourite-subreddits>
     <post-list :postList="posts"></post-list>
         
   </div>
@@ -12,17 +14,21 @@
 
 <script>
 import PostList from './components/PostList.vue'
+import FavouriteSubredditList from './components/FavouriteSubredditList.vue'
+
 
 export default {
   name: 'App',
   components: {
-    "post-list": PostList
+    "post-list": PostList,
+    "favourite-subreddits": FavouriteSubredditList
     
   },
   data(){
     return {
       subreddit: 'ProgrammerHumor',
-      posts: []
+      posts: [],
+      favouriteSubreddits: []
     }
   },
     mounted(){
@@ -34,6 +40,10 @@ export default {
         .then(res => res.json())
         .then(allData => this.posts = allData.data.children)
       },
+      addToFavourites: function(){
+        if (this.favouriteSubreddits.filter(item => this.subreddit === item).length === 0){
+        this.favouriteSubreddits.push(this.subreddit)}
+      }
         
     },
 }

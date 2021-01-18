@@ -53,7 +53,7 @@ export default {
     },
   methods:{
       getPosts: function(){
-        fetch(`https://www.reddit.com/r/${this.subreddit}.json`)
+        fetch(`https://www.reddit.com/r/${this.subreddit}.json?limit=100`)
         .then(res => res.json())
         .then(allData => this.posts = allData.data.children)
       },

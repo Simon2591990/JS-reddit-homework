@@ -46,7 +46,8 @@ export default {
     width: 500px
 }
 #post{
-    background-color: rgb(16, 16, 16);
+    background-color: rgb(24, 24, 24);
+    border-radius: 5px;
 }
 #black{
     background-color: rgb(0, 0, 0);
